@@ -1,7 +1,7 @@
 var traffic = {
   onload: function(e) {
     this.init = true;
-    dump("Hello");
+    dump("Hello\n");
     var nsCommandLine = window.arguments[0];
     nsCommandLine = nsCommandLine.QueryInterface(Components.interfaces.nsICommandLine);
     this.url = nsCommandLine.handleFlagWithParam("url", false);

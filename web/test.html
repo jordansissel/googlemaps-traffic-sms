@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>hurray for maps</title>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA-byvTDSeYW54aJrIuQbYQhTWj7ClNu6S_Uc1hiErWUXlVyZRzRQJiVTg0mYR_sozccMTS5Enytg0Lw"
+      type="text/javascript"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+
+    var callbacks = {};
+    var params = {};
+
+    function geocode_callback(data, map) {
+      var coords = data["Placemark"][0]["Point"]["coordinates"];
+      var long = coords[0];
+      var lat = coords[1];
+      map.setCenter(new GLatLng(lat, long), parseInt(params["zoom"]) || 10);
+    }
+
+    function query_params() {
+      data = {}
+      pairs = location.search.substr(1).split("&");
+      for (var p in pairs) {
+        var tmp = pairs[p].split("=", 2);
+        var key = unescape(tmp[0]);
+        var value = unescape(tmp[1]);
+        data[key] = value;
+      }
+      return data;
+    }
+
+    function load() {
+      if (!GBrowserIsCompatible())
+        return;
+      var map = new GMap2(document.getElementById("map"));
+      map.addOverlay(new GTrafficOverlay());
+      var geocode_el = document.createElement("script");
+      params = query_params();
+
+      var callback_name = "foo" + Math.floor(Math.random() * 10000000);
+      callbacks[callback_name] = function(data) {
+        geocode_callback(data, map);
+        delete callbacks[callback_name]
+      };
+
+      var geocode_query = {
+        "q": params["q"],
+        "replyto": params["replyto"],
+        "callback": "callbacks." + callback_name,
+      };
+
+      var geocode_url = "http://www.semicomplete.com/projects/traffic/app/geocode.py?";
+      for (var i in geocode_query) {
+        geocode_url = (geocode_url + "&" + escape(i) + "=" 
+                      + escape(geocode_query[i]));
+      }
+
+      geocode_el.setAttribute("src", geocode_url);
+      document.body.appendChild(geocode_el);
+    }
+
+    //]]>
+    </script>
+    <style>
+      body { padding: 0; margin: 0; }
+    </style>
+  </head>
+  <body onload="load()" onunload="GUnload()">
+    <div id="map" style="width: 650px; height: 500px"></div>
+  </body>
+</html>

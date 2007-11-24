@@ -1,7 +1,7 @@
 var traffic = {
   onload: function(e) {
+    //dump("alive\n");
     this.init = true;
-    dump("Hello\n");
     var nsCommandLine = window.arguments[0];
     nsCommandLine = nsCommandLine.QueryInterface(Components.interfaces.nsICommandLine);
     this.url = nsCommandLine.handleFlagWithParam("url", false);
@@ -10,6 +10,7 @@ var traffic = {
     this.title = nsCommandLine.handleFlagWithParam("title", false);
 
     document.getElementById("main-window").setAttribute("title", this.title);
+    //dump("Setting title: " + this.title + "\n")
 
     this.browser = document.getElementById("main-browser");
     this.browser.loadURI(this.url, null, null);

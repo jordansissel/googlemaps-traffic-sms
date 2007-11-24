@@ -25,12 +25,12 @@ mms_map = {
 domain = mms_map.get(domain, domain)
 replyto = "%s@%s" % (user, domain)
 
-base_url = "http://www.semicomplete.com/projects/traffic/app/traffic_request.py"
+base_url = "http://www.semicomplete.com/projects/traffic/app/request.py"
 query = [x.strip() for x in msg.get_payload().split("\n") if x.strip()][0]
 
 data = {
   "q": query,
-  "replyto": sender,
+  "replyto": replyto,
 }
 
 url = "%s?%s" % (base_url, urllib.urlencode(data))

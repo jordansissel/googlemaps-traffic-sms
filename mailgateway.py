@@ -5,6 +5,8 @@ import sys
 import re
 import urllib
 
+TRAFFIC_CAPTURE="/u9/psionic/projects/traffic/traffic.sh"
+
 p = email.Parser.Parser()
 msg = p.parse(sys.stdin)
 
@@ -23,7 +25,7 @@ mms_map = {
 domain = mms_map.get(domain, domain)
 replyto = "%s@%s" % (user, domain)
 
-base_url = "http://www.semicomplete.com/projects/traffic/app/send_request"
+base_url = "http://www.semicomplete.com/projects/traffic/app/traffic_request.py"
 query = [x.strip() for x in msg.get_payload().split("\n") if x.strip()][0]
 
 data = {
@@ -32,4 +34,6 @@ data = {
 }
 
 url = "%s?%s" % (base_url, urllib.urlencode(data))
-print url
+fd = urllib.urlopen(url)
+fd.read()
+fd.close()

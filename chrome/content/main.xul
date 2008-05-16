@@ -3,7 +3,7 @@
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         id="main-window" title="traffic check"
-        width="650" height="500">
+        width="1000" height="850">
   <script type="application/x-javascript" src="main.js"/>
   <vbox flex="1">
     <browser flex="1" id="main-browser" type="content-primary" />
